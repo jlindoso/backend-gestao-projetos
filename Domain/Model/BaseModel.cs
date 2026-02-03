@@ -8,7 +8,7 @@ namespace Domain.Model
     public abstract class BaseModel
     {
         public Guid Id { get; set; }
-        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Created { get; set; }
         public bool Deleted { get; set; } = false;
         
     }

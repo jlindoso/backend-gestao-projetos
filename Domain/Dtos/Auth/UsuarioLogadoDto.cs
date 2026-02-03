@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Model
+namespace Domain.Dtos.Auth
 {
-
-    // financeiro
-    // estrategico
-    // operacional
-
-    public class TipoJustificativaDomain: BaseModel
+    public class UsuarioLogadoDto
     {
         public string Nome { get; set; }
-        
+        public string Email { get; set; }
+        public string Token { get; set; }
     }
 }
