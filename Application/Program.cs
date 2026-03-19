@@ -7,7 +7,7 @@ using Data.Repositories;
 using Data.Seed;
 using Domain.Dtos;
 using Domain.Model;
-using Domain.Model.Repositories;
+
 using Domain.Ports;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -72,9 +72,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .AllowAnyOrigin()   
-            .AllowAnyMethod()   
-            .AllowAnyHeader();  
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -86,8 +86,12 @@ builder.Services.AddOpenApi(options =>
 });
 builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddTransient<IPacienteRepository, PacienteRepository>();
-builder.Services.AddTransient<IPacienteService, PacienteService>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+
+
 
 var app = builder.Build();
 
@@ -100,7 +104,7 @@ if (app.Environment.IsDevelopment())
         options.WithTitle("Manager")
            .WithTheme(ScalarTheme.Solarized);
 
-        
+
     });
 }
 
@@ -117,8 +121,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var userManager = serviceProvider.GetRequiredService<UserManager<UsuarioDomain>>();
-var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-    await ApplicationDbInitializer.SeedRolesAndUsersAsync(userManager, roleManager);
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+        await ApplicationDbInitializer.SeedRolesAndUsersAsync(userManager, roleManager);
     }
     catch (Exception ex)
     {

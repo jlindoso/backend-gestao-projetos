@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Model
 {
-   public class UsuarioDomain: IdentityUser<Guid>
+    public class CategoriaDomain: BaseModel
     {
-        public string Nome { get; set; }
+       public string Nome { get; set; }
+        
     }
 }

@@ -9,11 +9,11 @@ namespace Domain.Dtos
     {
         public T? Data { get; set; }
         public bool Success { get; set; } = true;
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
 
 
-        public static Response<T> Ok(T? data, string message = null)
+        public static Response<T> Ok(T? data, string message = "")
             => new Response<T> { Data = data, Success = true, Message = message };
 
         public static Response<T> Fail(string message)

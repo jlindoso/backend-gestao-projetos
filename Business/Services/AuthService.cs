@@ -29,7 +29,7 @@ namespace Business.Services
                 var result = await _userManager.CreateAsync(user, password);
                 if (!result.Succeeded)
                     throw new Exception(result?.Errors?.FirstOrDefault()?.Description);
-                await _userManager.AddToRoleAsync(user, PerfilDomain.Paciente);
+               
 
                 return Response<UsuarioDomain>.Ok(user);
             }
@@ -59,7 +59,7 @@ namespace Business.Services
             return Response<UsuarioLogadoDto>.Ok(new()
             {
                 Email = user.NormalizedEmail,
-                Nome = user.NomeSocial,
+                Nome = user.Nome,
                 Token = token
             });
         }
