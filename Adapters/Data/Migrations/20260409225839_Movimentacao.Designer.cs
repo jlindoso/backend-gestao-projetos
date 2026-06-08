@@ -3,6 +3,7 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260409225839_Movimentacao")]
+    partial class Movimentacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,79 +216,6 @@ namespace Data.Migrations
                     b.HasIndex("ProdutoId");
 
                     b.ToTable("Estoques");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnica", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ModoPreparo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("TempoMedio")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UnidadeMedidaId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.HasIndex("UnidadeMedidaId");
-
-                    b.ToTable("FichasTecnicas");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnicaItems", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("FichaTecnicaId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Quantidade")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UnidadeMedidaId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FichaTecnicaId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.HasIndex("UnidadeMedidaId");
-
-                    b.ToTable("FichasTecnicasItens");
                 });
 
             modelBuilder.Entity("Domain.Model.MovimentacaoEstoqueDomain", b =>
@@ -594,9 +524,6 @@ namespace Data.Migrations
 
                     b.Property<int>("EstoqueMinimo")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("Insumo")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -1076,52 +1003,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Produto");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnica", b =>
-                {
-                    b.HasOne("Domain.Model.ProdutoDomain", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.UnidadeMedidaDomain", "UnidadeMedida")
-                        .WithMany()
-                        .HasForeignKey("UnidadeMedidaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("UnidadeMedida");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnicaItems", b =>
-                {
-                    b.HasOne("Domain.Model.FichaTecnica", "FichaTecnica")
-                        .WithMany()
-                        .HasForeignKey("FichaTecnicaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.ProdutoDomain", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.UnidadeMedidaDomain", "UnidadeMedida")
-                        .WithMany()
-                        .HasForeignKey("UnidadeMedidaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FichaTecnica");
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("UnidadeMedida");
                 });
 
             modelBuilder.Entity("Domain.Model.MovimentacaoEstoqueDomain", b =>

@@ -10,9 +10,9 @@ namespace Application.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TipoSaidaController : ControllerBase<TipoSaidaDomain>
+    public class TipoMovimentacaoController : ControllerBase<TipoMovimentacaoDomain>
     {
-        public TipoSaidaController(IService<TipoSaidaDomain> service) : base(service)
+        public TipoMovimentacaoController(IService<TipoMovimentacaoDomain> service) : base(service)
         {
         }
     }

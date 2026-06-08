@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Domain.Model;
 
-namespace Domain.Model
+namespace Domain.Dtos.Produtos
 {
-    public class ProdutoDomain: BaseModel
+    public class ProdutoDTO
     {
+        public Guid Id { get; set; }
         public string Nome { get; set; }
-        [JsonIgnore]
-        public Guid UnidadeMedidaId { get; set; }
         public virtual UnidadeMedidaDomain UnidadeMedida { get; set; }
-        public string CodigoBarra { get; set; }
-        public int EstoqueMinimo { get; set; }
-        public bool Insumo { get; set; } = false; 
-        [JsonIgnore]
         public virtual FichaTecnica FichaTecnica { get; set; }
-        
+        public string CodigoBarra { get; set; }
+        public bool Insumo { get; set; } = false; 
     }
 }

@@ -14,7 +14,7 @@ namespace Domain.Ports
         Task<ListResponse<T>> ObterPaginadoAsync(
             string? filter = null, 
             int? limit = null, 
-            int? offset = null);
+            int? offset = null, params string[] includes);
         Task<Response<T>> AdicionarAsync(T entidade);
         
         void Atualizar(T entidade);

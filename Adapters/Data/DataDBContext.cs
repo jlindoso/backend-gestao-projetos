@@ -23,8 +23,10 @@ namespace Data
         public DbSet<EstoqueDomain> Estoques { get; set; }
         public DbSet<MovimentacaoEstoqueDomain> MovimentacoesEstoque { get; set; }
         public DbSet<ProdutoDomain> Produtos { get; set; }
+        public DbSet<FichaTecnica> FichasTecnicas { get; set; }
+        public DbSet<FichaTecnicaItems> FichasTecnicasItens { get; set; }
         public DbSet<UnidadeMedidaDomain> UnidadesMedida { get; set; }
-        public DbSet<TipoSaidaDomain> TiposSaida { get; set; }
+        public DbSet<TipoMovimentacaoDomain> TiposMovimentacao { get; set; }
         public DbSet<NotaFiscalDomain> NotasFiscais { get; set; }
         public DbSet<ItemNFDomain> ItensNotaFiscal { get; set; }
         public DbSet<TipoEmissaoNFDomain> TiposEmissaoNF { get; set; }
@@ -35,6 +37,8 @@ namespace Data
         {
             base.OnModelCreating(builder);
             Data.Seed.ApplicationDbInitializer.SeedCategoriasAsync(builder);
+            Data.Seed.ApplicationDbInitializer.SeedUnidadesDeMedidasAsync(builder);
+            Data.Seed.ApplicationDbInitializer.SeedTiposDeMovimentacaoAsync(builder);
         }
     }
 

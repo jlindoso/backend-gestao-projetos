@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Dtos;
@@ -40,38 +41,76 @@ namespace Data.Repositories
                 return Response<T>.Ok(entidade);
             });
 
-
         public Task<ListResponse<T>> ObterPaginadoAsync(
-            string? filter = null,
-            int? limit = null,
-            int? offset = null) =>
+                                                        string? filter = null,
+                                                        int? limit = null,
+                                                        int? offset = null,
+                                                        params string[] includes) => ExecuteSafeListAsync(async () =>
+    {
+        IQueryable<T> query = _dbSet.AsNoTracking();
 
-            ExecuteSafeListAsync(async () =>
+        // 1. Aplica Includes
+        if (includes != null && includes.Any())
+        {
+            foreach (var include in includes) query = query.Include(include);
+        }
+
+        // 2. Filtro de Soft Delete
+        query = query.Where(c => EF.Property<bool>(c, "Deleted") == false);
+
+      
+        if (!string.IsNullOrWhiteSpace(filter))
+        {
+            if (filter.Contains(":"))
+            {
+                var partes = filter.Split(':', 2);
+                var nomeCampo = partes[0].Trim();
+                var valorParaFiltrar = partes[1].Trim();
+
+                var prop = typeof(T).GetProperty(nomeCampo, System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+
+                if (prop != null)
                 {
+                    if (prop.PropertyType == typeof(string))
+                    {
+                        query = query.Where($"{prop.Name}.Contains(@0)", valorParaFiltrar);
+                    }
+                    else
+                    {
+                        query = query.Where($"{prop.Name} == @0", valorParaFiltrar);
+                    }
+                }
+            }
+            else
+            {
+                // Busca Global (sua lógica original)
+                var properties = typeof(T).GetProperties()
+                    .Where(p => p.PropertyType == typeof(string))
+                    .Select(p => p.Name);
 
-                    IQueryable<T> query = _dbSet.AsNoTracking();
+                if (properties.Any())
+                {
+                    var filterExpression = string.Join(" OR ", properties.Select(p => $"{p}.Contains(@0)"));
+                    query = query.Where(filterExpression, filter);
+                }
+            }
+        }
 
+        // 4. Paginação e Retorno
+        int total = await query.CountAsync();
+        if (offset.HasValue && offset > 0) query = query.Skip(offset.Value);
+        if (limit.HasValue && limit > 0) query = query.Take(limit.Value);
 
-                    query = query.Where(c => EF.Property<bool>(c, "Deleted") == false);
+        var dados = await query.ToListAsync();
 
-
-                    int total = await query.CountAsync();
-
-
-                            if (offset.HasValue && offset > 0) query = query.Skip(offset.Value);
-                            if (limit.HasValue && limit > 0) query = query.Take(limit.Value);
-
-
-                            var dados = await query.ToListAsync();
-
-                            return new ListResponse<T>
-                            {
-                                Data = dados,
-                Total = total,
-                Limit = limit ?? 0,
-                Offset = offset ?? 0
-            };
-});
+        return new ListResponse<T>
+        {
+            Data = dados,
+            Total = total,
+            Limit = limit ?? total,
+            Offset = offset ?? 0
+        };
+    });
 
         public void Atualizar(T entidade)
         {
@@ -101,7 +140,7 @@ namespace Data.Repositories
             {
                 return await action();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return new ListResponse<TResult>

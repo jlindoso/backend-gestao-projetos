@@ -31,7 +31,7 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> ObterPaginado([FromQuery] int limit = 50, [FromQuery] int offset = 0)
+        public virtual async Task<IActionResult> ObterPaginado([FromQuery] int? limit = null, [FromQuery] int? offset = null)
         {
             var response = await _service.ObterPaginadoAsync(null, null, limit, offset);
             return Ok(response);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Dtos;
 using Domain.Ports;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Data.Repositories
 {
@@ -15,6 +16,12 @@ namespace Data.Repositories
         {
             _context = context;
         }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
+        }
+
         public async Task<Response<bool>> CommitAsync()
         {
             try

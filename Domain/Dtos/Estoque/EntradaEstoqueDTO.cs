@@ -1,18 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Domain.Model
+namespace Domain.Dtos.Estoque
 {
-    public class EstoqueDomain: BaseModel
+    public class EntradaEstoqueDTO
     {
-        public Guid ProdutoId { get; set; }
-        public virtual ProdutoDomain Produto { get; set; }
+        [Required]
+        public string CodigoBarras { get; set; }
         public DateTime? DataValidade { get; set; }
         public string Lote { get; set; }
-        public DateTime DataEntrada { get; set; } = DateTime.UtcNow;
+        [Required]
         public int Quantidade { get; set; }
+        [Required]
         public decimal ValorUnitario { get; set; }
     }
 }

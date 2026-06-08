@@ -12,9 +12,9 @@ namespace Domain.Model
 
         public int Quantidade { get; set; }
 
-        public DateTime DataSaida  { get; set; }
+        public DateTime DataMovimentacao  { get; set; }
 
-        public Guid TipoSaidaId { get; set; }
-        public virtual TipoSaidaDomain TipoSaida { get; set; }
+        public Guid TipoMovimentacaoId { get; set; }
+        public virtual TipoMovimentacaoDomain TipoMovimentacao{ get; set; }
     }
 }

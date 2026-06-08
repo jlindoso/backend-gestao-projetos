@@ -3,6 +3,7 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260409203521_valorUnitario")]
+    partial class valorUnitario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,79 +218,6 @@ namespace Data.Migrations
                     b.ToTable("Estoques");
                 });
 
-            modelBuilder.Entity("Domain.Model.FichaTecnica", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ModoPreparo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("TempoMedio")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UnidadeMedidaId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.HasIndex("UnidadeMedidaId");
-
-                    b.ToTable("FichasTecnicas");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnicaItems", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("FichaTecnicaId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Quantidade")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UnidadeMedidaId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FichaTecnicaId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.HasIndex("UnidadeMedidaId");
-
-                    b.ToTable("FichasTecnicasItens");
-                });
-
             modelBuilder.Entity("Domain.Model.MovimentacaoEstoqueDomain", b =>
                 {
                     b.Property<Guid>("Id")
@@ -297,7 +227,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DataMovimentacao")
+                    b.Property<DateTime>("DataSaida")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Deleted")
@@ -309,14 +239,14 @@ namespace Data.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("TipoMovimentacaoId")
+                    b.Property<Guid>("TipoSaidaId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProdutoId");
 
-                    b.HasIndex("TipoMovimentacaoId");
+                    b.HasIndex("TipoSaidaId");
 
                     b.ToTable("MovimentacoesEstoque");
                 });
@@ -595,9 +525,6 @@ namespace Data.Migrations
                     b.Property<int>("EstoqueMinimo")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Insumo")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text");
@@ -612,7 +539,7 @@ namespace Data.Migrations
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("Domain.Model.TipoMovimentacaoDomain", b =>
+            modelBuilder.Entity("Domain.Model.TipoSaidaDomain", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -630,44 +557,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposMovimentacao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Nome = "Entrada"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Nome = "Saída"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000003"),
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Nome = "Devolução"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Nome = "Descarte"
-                        },
-                        new
-                        {
-                            Id = new Guid("00000000-0000-0000-0000-000000000005"),
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
-                            Nome = "Cortesia"
-                        });
+                    b.ToTable("TiposSaida");
                 });
 
             modelBuilder.Entity("Domain.Model.UnidadeMedidaDomain", b =>
@@ -1078,52 +968,6 @@ namespace Data.Migrations
                     b.Navigation("Produto");
                 });
 
-            modelBuilder.Entity("Domain.Model.FichaTecnica", b =>
-                {
-                    b.HasOne("Domain.Model.ProdutoDomain", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.UnidadeMedidaDomain", "UnidadeMedida")
-                        .WithMany()
-                        .HasForeignKey("UnidadeMedidaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("UnidadeMedida");
-                });
-
-            modelBuilder.Entity("Domain.Model.FichaTecnicaItems", b =>
-                {
-                    b.HasOne("Domain.Model.FichaTecnica", "FichaTecnica")
-                        .WithMany()
-                        .HasForeignKey("FichaTecnicaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.ProdutoDomain", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.UnidadeMedidaDomain", "UnidadeMedida")
-                        .WithMany()
-                        .HasForeignKey("UnidadeMedidaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FichaTecnica");
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("UnidadeMedida");
-                });
-
             modelBuilder.Entity("Domain.Model.MovimentacaoEstoqueDomain", b =>
                 {
                     b.HasOne("Domain.Model.ProdutoDomain", "Produto")
@@ -1132,15 +976,15 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Model.TipoMovimentacaoDomain", "TipoMovimentacao")
+                    b.HasOne("Domain.Model.TipoSaidaDomain", "TipoSaida")
                         .WithMany()
-                        .HasForeignKey("TipoMovimentacaoId")
+                        .HasForeignKey("TipoSaidaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Produto");
 
-                    b.Navigation("TipoMovimentacao");
+                    b.Navigation("TipoSaida");
                 });
 
             modelBuilder.Entity("Domain.Model.NotaFiscal.EmitenteNFDomain", b =>

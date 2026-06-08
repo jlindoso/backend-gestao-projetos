@@ -91,13 +91,17 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
-
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IEstoqueService, EstoqueService>();
+builder.Services.AddScoped<IMovimentacaoEstoqueService, MovimentacaoEstoqueService>();
+builder.Services.AddScoped<IFichaTecnicaService, FichaTecnicaService>();
+builder.Services.AddScoped<IFichaTecnicaItemsService, FichaTecnicaItemsService>();
 
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
-{
+// if (!app.Environment.IsDevelopment())
+// {
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
@@ -106,9 +110,9 @@ if (app.Environment.IsDevelopment())
 
 
     });
-}
+// }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
